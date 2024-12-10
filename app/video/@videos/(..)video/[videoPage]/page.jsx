@@ -124,8 +124,10 @@ export default async function VideoPage({ params }) {
 							</h1>
 							<div className="flex items-center space-x-4 mt-2">
 								{/* <!-- যেহেতু videos.json এ কোনো Avatar দেয়া নাই, সেহেতু আপনি যেকোনো র‍্যান্ডম Avatar ব্যবহার করতে পারবেন --> */}
-								<img
-									src="./assets/avatar.png"
+								<Image
+									width={32}
+									height={32}
+									src="/avatar.png"
 									alt="Avatar"
 									className="w-10 h-10 rounded-full"
 								/>
@@ -141,7 +143,9 @@ export default async function VideoPage({ params }) {
 							<h2 className="text-xl font-semibold mb-4">You may like</h2>
 							<div className="space-y-4">
 								<div className="flex items-start space-x-4">
-									<img
+									<Image
+										width={109}
+										height={80}
 										src="https://i.ytimg.com/vi/9kjwMTj8ZD0/hqdefault.jpg"
 										alt="Fallout Shelter PC Thumbnail"
 										className="w-30 h-20 rounded object-cover"
@@ -156,7 +160,9 @@ export default async function VideoPage({ params }) {
 								</div>
 
 								<div className="flex items-start space-x-4">
-									<img
+									<Image
+										width={109}
+										height={80}
 										src="https://i.ytimg.com/vi/Ij7FWQJR0e8/hqdefault.jpg"
 										alt="Resident Evil Remastered Thumbnail"
 										className="w-30 h-20 rounded object-cover"
@@ -171,7 +177,9 @@ export default async function VideoPage({ params }) {
 								</div>
 
 								<div className="flex items-start space-x-4">
-									<img
+									<Image
+										width={109}
+										height={80}
 										src="https://i.ytimg.com/vi/F8BactAXOH4/hqdefault.jpg"
 										alt="Open World Games Thumbnail"
 										className="w-30 h-20 rounded object-cover"
