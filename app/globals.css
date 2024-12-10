@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.modal_wraper {
+	background-color: rgba(0, 0, 0, 0.651);
+	height: 100%;
+	z-index: 99999;
+}
+.custom-box {
+}
