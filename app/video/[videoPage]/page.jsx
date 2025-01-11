@@ -1,17 +1,34 @@
+"use client";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import getVideo from "../video";
 import { notFound } from "next/navigation";
 import NotFound from "./not-found";
 import LanBtn from "@/app/components/LanBtn";
+import useDataContext from "@/app/context/UseDataContext";
+import { getLang } from "../Lang";
 
-export default async function VideoPage({ params }) {
-	const videodata = await getVideo();
-	const { videoPage } = params;
-	const item = videodata.find((e) => e.videoId === videoPage);
+export default function VideoPage({ params }) {
+	const { lang } = useDataContext();
+	const [langData, setLangData] = useState(null);
+	const [videodata, setVideodata] = useState(null);
 
-	if (!item) {
-		return <NotFound videoPage={videoPage} />;
-	}
+	useEffect(() => {
+		async function lCaller() {
+			const video = await getVideo();
+			const language = await getLang(!lang ? "en" : "bn");
+			setVideodata(video);
+			setLangData(language);
+			const { videoPage } = params;
+			const item = videodata?.find((e) => e.videoId === videoPage);
+			if (!item) {
+				return <NotFound videoPage={videoPage} />;
+			}
+		}
+
+		lCaller();
+	}, [lang]);
+
 	return (
 		<div className="bg-color-bg text-white font-exo">
 			<div className="w-28 py-4 mr-10 ml-auto">
@@ -29,13 +46,13 @@ export default async function VideoPage({ params }) {
 						/>
 						<nav className="hidden md:flex space-x-6">
 							<a href="#" className="text-color-purple font-semibold">
-								TOP STREAMING
+								{langData?.opOne}
 							</a>
 							<a href="#" className="text-gray-400 hover:text-white">
-								GAMES
+								{langData?.opTwo}
 							</a>
 							<a href="#" className="text-gray-400 hover:text-white">
-								TEAMS
+								{langData?.opThree}
 							</a>
 						</nav>
 					</div>
@@ -54,9 +71,9 @@ export default async function VideoPage({ params }) {
 								xmlns="http://www.w3.org/2000/svg"
 							>
 								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									strokeWidth="2"
 									d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
 								></path>
 							</svg>
@@ -96,15 +113,15 @@ export default async function VideoPage({ params }) {
 											xmlns="http://www.w3.org/2000/svg"
 										>
 											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
+												strokeLinecap="round"
+												strokeLinejoin="round"
+												strokeWidth="2"
 												d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
 											></path>
 											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												stroke-width="2"
+												strokeLinecap="round"
+												strokeLinejoin="round"
+												strokeWidth="2"
 												d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
 											></path>
 										</svg>
@@ -136,12 +153,14 @@ export default async function VideoPage({ params }) {
 								<p className="font-semibold">Professor Of Pc Gaming</p>
 							</div>
 							<button className="bg-color-purple hover:bg-opacity-80 text-white px-4 py-1 rounded-full text-sm ml-auto">
-								Subscribe
+								{langData?.Subscribe}
 							</button>
 						</div>
 					</div>
 					<div className="lg:w-1/4">
-						<h2 className="text-xl font-semibold mb-4">You may like</h2>
+						<h2 className="text-xl font-semibold mb-4">
+							{langData?.YouMayLike}
+						</h2>
 						<div className="space-y-4">
 							<div className="flex items-start space-x-4">
 								<Image

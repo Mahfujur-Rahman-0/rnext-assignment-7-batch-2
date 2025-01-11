@@ -1,10 +1,28 @@
+"use client";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import getVideo from "./video";
 import Image from "next/image";
 import LanBtn from "../components/LanBtn";
+import { getLang } from "./Lang";
+import useDataContext from "../context/UseDataContext";
 
-export default async function Landing() {
-	const videodata = await getVideo();
+export default function Landing() {
+	const { lang } = useDataContext();
+	const [videodata, setVideodata] = useState(null);
+	const [langData, setLangData] = useState(null);
+
+	useEffect(() => {
+		async function lCaller() {
+			const video = await getVideo();
+			const language = await getLang(!lang ? "en" : "bn");
+			setVideodata(video);
+			setLangData(language);
+		}
+
+		lCaller();
+	}, [lang]);
+
 	return (
 		<div className="bg-color-bg text-white font-exo">
 			<div className="w-28 py-4 mr-10 ml-auto">
@@ -22,13 +40,13 @@ export default async function Landing() {
 						/>
 						<nav className=" hidden md:flex space-x-6">
 							<a href="#" className="text-color-purple font-semibold">
-								TOP STREAMING
+								{langData?.opOne}
 							</a>
 							<a href="#" className="text-gray-400 hover:text-white">
-								GAMES
+								{langData?.opTwo}
 							</a>
 							<a href="#" className="text-gray-400 hover:text-white">
-								TEAMS
+								{langData?.opThree}
 							</a>
 						</nav>
 					</div>
@@ -36,7 +54,7 @@ export default async function Landing() {
 						<div className="relative">
 							<input
 								type="text"
-								placeholder="Search"
+								placeholder={langData?.search}
 								className="bg-color-gray rounded-full py-2 px-4 w-64 focus:outline-none focus:ring-2 focus:ring-color-purple"
 							/>
 							<svg
@@ -47,9 +65,9 @@ export default async function Landing() {
 								xmlns="http://www.w3.org/2000/svg"
 							>
 								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									strokeWidth="2"
 									d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
 								></path>
 							</svg>
@@ -68,27 +86,19 @@ export default async function Landing() {
 				<main className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-center">
 					<div className="lg:col-span-2">
 						<h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
-							PLAY, COMPETE,
-							<br />
-							FOLLOW POPULAR
-							<br />
-							STREAMERS
+							{langData?.header}
 						</h1>
-						<p className="text-gray-400 mb-8">
-							The best streamers gather here to have a good time, be among us,
-							join us!
-						</p>
+						<p className="text-gray-400 mb-8">{langData?.headDiscription}</p>
 					</div>
 					<div className="lg:col-span-2">
 						<div className="relative rounded-lg overflow-hidden">
 							<iframe
 								src="https://www.youtube.com/embed/0VtVPk7Zv9c"
 								title="YouTube video player"
-								frameborder="0"
 								className="w-full aspect-video"
 								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-								referrerpolicy="strict-origin-when-cross-origin"
-								allowfullscreen
+								referrerPolicy="strict-origin-when-cross-origin"
+								allowFullScreen
 							></iframe>
 
 							<div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-between p-4">
@@ -99,7 +109,7 @@ export default async function Landing() {
 								</div>
 								<div>
 									<div className="text-4xl font-bold mb-2">04:03</div>
-									<p className="text-sm">Broadcast starts in</p>
+									<p className="text-sm">{langData?.Broadcast}</p>
 								</div>
 							</div>
 						</div>
@@ -111,12 +121,12 @@ export default async function Landing() {
 
 				<section className="mt-12">
 					<div className="flex justify-between items-center mb-4">
-						<h2 className="text-2xl font-semibold">Streams of the day</h2>
+						<h2 className="text-2xl font-semibold">{langData?.suggestions}</h2>
 						<a
 							href="#"
 							className="bg-color-gray hover:bg-opacity-80 text-sm px-4 py-2 rounded-full"
 						>
-							View all
+							{langData?.viewAll}
 						</a>
 					</div>
 
@@ -129,7 +139,7 @@ export default async function Landing() {
 								<Link href={`/video/${e.videoId}`}>
 									<Image
 										src={e.thumbnail}
-										width={360}
+										width={364}
 										height={160}
 										alt={e.title}
 										className="w-full h-40 object-cover"
